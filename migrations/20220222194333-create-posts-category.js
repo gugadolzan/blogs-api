@@ -8,10 +8,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         primaryKey: true,
-        // references: {
-        //   key: '',
-        //   model: '',
-        // },
+        references: {
+          key: 'id',
+          model: 'BlogPosts',
+        },
         type: Sequelize.INTEGER,
       },
       categoryId: {
