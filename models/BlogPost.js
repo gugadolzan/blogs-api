@@ -1,3 +1,10 @@
+const associate = (models) => {
+  models.BlogPost.belongsTo(models.User, {
+    foreignKey: 'userId',
+    as: 'user',
+  });
+};
+
 module.exports = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define(
     'BlogPost',
@@ -9,11 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       published: { defaultValue: DataTypes.NOW, type: DataTypes.DATE },
       updated: { defaultValue: DataTypes.NOW, type: DataTypes.DATE },
     },
-    {
-      timestamps: false,
-      tableName: 'BlogPosts',
-    },
+    { timestamps: false, tableName: 'BlogPosts' },
   );
+
+  BlogPost.associate = associate;
 
   return BlogPost;
 };
