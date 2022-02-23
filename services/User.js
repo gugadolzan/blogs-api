@@ -23,7 +23,7 @@ const getById = async (id) => {
 
   // Remove password from the data
   const { password, ...userData } = user.dataValues;
-  
+
   // and return the user data without password
   return userData;
 };

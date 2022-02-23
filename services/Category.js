@@ -12,6 +12,13 @@ const create = async (name) => {
   return category;
 };
 
+const getAll = async () => {
+  const categories = await Category.findAll({ order: [['id', 'ASC']] });
+
+  return categories;
+};
+
 module.exports = {
   create,
+  getAll,
 };

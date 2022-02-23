@@ -19,7 +19,7 @@ const create = rescue(async (req, res) => {
   res.status(codes.CREATED).json({ token });
 });
 
-const getAll = rescue(async (req, res) => {
+const getAll = rescue(async (_req, res) => {
   const users = await services.User.getAll();
 
   res.status(codes.OK).json(users);
