@@ -9,6 +9,16 @@ const errors = {
     message: 'Invalid fields',
     status: codes.BAD_REQUEST,
   },
+  // It is possible to handle JsonWebTokenError using an error middleware
+  // Refer to ../middlewares/error.js
+  JsonWebTokenError: {
+    message: 'Expired or invalid token',
+    status: codes.UNAUTHORIZED,
+  },
+  tokenNotFound: {
+    message: 'Token not found',
+    status: codes.UNAUTHORIZED,
+  },
 };
 
 module.exports = (code) => {

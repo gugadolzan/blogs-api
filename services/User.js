@@ -10,6 +10,13 @@ const create = async (payload) => {
   await User.create(payload);
 };
 
+const getAll = async () => {
+  const users = await User.findAll();
+  
+  return users;
+};
+
 module.exports = {
   create,
+  getAll,
 };
