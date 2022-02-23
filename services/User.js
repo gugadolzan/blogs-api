@@ -5,7 +5,7 @@ const { throwNewError } = require('../helpers');
 const create = async (payload) => {
   const user = await User.findOne({ where: { email: payload.email } });
 
-  if (user) throwNewError('alreadyRegistered');
+  if (user) throwNewError('userConflict');
 
   await User.create(payload);
 };

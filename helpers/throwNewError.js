@@ -1,8 +1,8 @@
 const codes = require('./statusCodes');
 
 const errors = {
-  alreadyRegistered: {
-    message: 'User already registered',
+  categoryConflict: {
+    message: 'Category already registered',
     status: codes.CONFLICT,
   },
   invalidFields: {
@@ -18,6 +18,10 @@ const errors = {
   tokenNotFound: {
     message: 'Token not found',
     status: codes.UNAUTHORIZED,
+  },
+  userConflict: {
+    message: 'User already registered',
+    status: codes.CONFLICT,
   },
   userNotFound: {
     message: 'User does not exist',
