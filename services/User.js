@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-const throwNewError = require('../helpers/throwNewError');
+const { throwNewError } = require('../helpers');
 
 const create = async (payload) => {
   const user = await User.findOne({ where: { email: payload.email } });

@@ -1,4 +1,4 @@
-const codes = require('../helpers/statusCodes');
+const { codes } = require('../helpers');
 
 // Exporting array of middlewares, which will be executed in order
 module.exports = [

@@ -1,8 +1,6 @@
 const rescue = require('express-rescue');
 
-const { generate, validate } = require('../helpers/jwt');
-const codes = require('../helpers/statusCodes');
-const throwNewError = require('../helpers/throwNewError');
+const { codes, jwt, throwNewError } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -16,7 +14,7 @@ const create = rescue(async (req, res) => {
 
   await services.User.create(payload);
 
-  const token = generate(payload);
+  const token = jwt.generate(payload);
 
   res.status(codes.CREATED).json({ token });
 });
@@ -29,7 +27,7 @@ const getAll = rescue(async (req, res) => {
   // If authorization header is not present or is invalid
   // an error will be thrown by the validate function
   // Refer to ../helpers/jwt.js
-  await validate(authorization);
+  await jwt.validate(authorization);
 
   const users = await services.User.getAll();
 

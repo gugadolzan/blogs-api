@@ -1,7 +1,6 @@
 const rescue = require('express-rescue');
 
-const { generate } = require('../helpers/jwt');
-const codes = require('../helpers/statusCodes');
+const { codes, jwt } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -15,7 +14,7 @@ const login = rescue(async (req, res) => {
 
   await services.Login.login(email);
 
-  const token = generate(payload);
+  const token = jwt.generate(payload);
 
   res.status(codes.OK).json({ token });
 });
