@@ -5,6 +5,10 @@ const errors = {
     message: 'Category already registered',
     status: codes.CONFLICT,
   },
+  categoryNotFound: {
+    message: '"categoryIds" not found',
+    status: codes.BAD_REQUEST,
+  },
   invalidFields: {
     message: 'Invalid fields',
     status: codes.BAD_REQUEST,

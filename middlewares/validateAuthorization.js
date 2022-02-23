@@ -10,7 +10,10 @@ module.exports = rescue(async (req, _res, next) => {
   // If authorization header is invalid
   // an error will be thrown by the validate function
   // Refer to ../helpers/jwt.js
-  await jwt.validate(authorization);
+  const { email } = await jwt.validate(authorization);
+
+  // Add email to request body
+  req.body = { ...req.body, email };
 
   next();
 });

@@ -14,6 +14,7 @@ app.get('/', (_request, response) => {
 app.use('/user', routes.User);
 app.use('/login', routes.Login);
 app.use('/categories', routes.Category);
+app.use('/post', routes.BlogPost);
 
 app.use(error);
 
