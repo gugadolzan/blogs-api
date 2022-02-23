@@ -6,6 +6,8 @@ module.exports = [
    * Middleware for handling Joi errors
    */
   (err, _req, res, next) => {
+    // If error is not an instance of Joi
+    // then pass it to next middleware
     if (!err.isJoi) return next(err);
 
     const status = codes.BAD_REQUEST;
@@ -20,7 +22,9 @@ module.exports = [
     const status = err.status || codes.INTERNAL_SERVER_ERROR;
     const message = err.message || 'Internal server error';
 
-    if (status === codes.INTERNAL_SERVER_ERROR) console.error(err);
+    // If is an internal server error
+    // then log it
+    if (status === 500) console.error(err);
 
     res.status(status).json({ message });
   },

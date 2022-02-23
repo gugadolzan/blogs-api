@@ -2,18 +2,18 @@ const rescue = require('express-rescue');
 
 const { generate } = require('../helpers/jwt');
 const codes = require('../helpers/statusCodes');
-const LoginSchema = require('../schemas/LoginSchema');
-const LoginService = require('../services/LoginService');
+const schemas = require('../schemas');
+const services = require('../services');
 
 const login = rescue(async (req, res) => {
   const { email, password } = req.body;
   const payload = { email, password };
 
-  const { error } = LoginSchema.validate(payload);
+  const { error } = schemas.Login.validate(payload);
 
   if (error) throw error;
 
-  await LoginService.login(payload);
+  await services.Login.login(email);
 
   const token = generate(payload);
 
