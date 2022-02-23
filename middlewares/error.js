@@ -1,3 +1,5 @@
+const codes = require('../helpers/statusCodes');
+
 // Exporting array of middlewares, which will be executed in order
 module.exports = [
   /**
@@ -6,7 +8,7 @@ module.exports = [
   (err, _req, res, next) => {
     if (!err.isJoi) return next(err);
 
-    const status = 400;
+    const status = codes.BAD_REQUEST;
     const { message } = err.details[0];
 
     res.status(status).json({ message });
@@ -15,10 +17,10 @@ module.exports = [
    * Middleware for handling other errors
    */
   (err, _req, res, _next) => {
-    const status = err.status || 500;
+    const status = err.status || codes.INTERNAL_SERVER_ERROR;
     const message = err.message || 'Internal server error';
 
-    if (status === 500) console.error(err);
+    if (status === codes.INTERNAL_SERVER_ERROR) console.error(err);
 
     res.status(status).json({ message });
   },
