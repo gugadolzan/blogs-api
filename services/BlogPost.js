@@ -33,7 +33,22 @@ const getAll = async () => {
   return blogPosts;
 };
 
+const getById = async (id) => {
+  const blogPost = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!blogPost) throwNewError('postNotFound');
+
+  return blogPost;
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

@@ -19,6 +19,10 @@ const errors = {
     message: 'Expired or invalid token',
     status: codes.UNAUTHORIZED,
   },
+  postNotFound: {
+    message: 'Post does not exist',
+    status: codes.NOT_FOUND,
+  },
   tokenNotFound: {
     message: 'Token not found',
     status: codes.UNAUTHORIZED,

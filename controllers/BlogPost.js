@@ -21,13 +21,22 @@ const create = rescue(async (req, res) => {
   res.status(codes.CREATED).json(blogPost);
 });
 
-const getAll = rescue(async (req, res) => {
+const getAll = rescue(async (_req, res) => {
   const blogPosts = await services.BlogPost.getAll();
 
   res.status(codes.OK).json(blogPosts);
 });
 
+const getById = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const blogPost = await services.BlogPost.getById(id);
+
+  res.status(codes.OK).json(blogPost);
+});
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
