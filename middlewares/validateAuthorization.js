@@ -13,7 +13,7 @@ module.exports = rescue(async (req, _res, next) => {
   const { email } = await jwt.validate(authorization);
 
   // Add email to request body
-  req.body = { ...req.body, email };
+  req.email = email;
 
   next();
 });

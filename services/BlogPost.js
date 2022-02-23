@@ -35,11 +35,11 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const blogPost = await BlogPost.findOne({
-    where: { id },
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
       { model: Category, as: 'categories', through: { attributes: [] } },
     ],
+    where: { id },
   });
 
   if (!blogPost) throwNewError('postNotFound');
@@ -47,8 +47,28 @@ const getById = async (id) => {
   return blogPost;
 };
 
+const update = async (email, id, { title, content }) => {
+  const { userId } = await getById(id);
+
+  const { id: editorId } = await User.findOne({ where: { email } });
+
+  console.log(userId, editorId);
+  if (userId !== editorId) throwNewError('unauthorized');
+
+  await BlogPost.update({ title, content }, { where: { id } });
+
+  return BlogPost.findOne({
+    attributes: ['title', 'content', 'userId'],
+    include: [
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+    where: { id },
+  });
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

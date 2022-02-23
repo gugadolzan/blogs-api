@@ -5,7 +5,8 @@ const schemas = require('../schemas');
 const services = require('../services');
 
 const create = rescue(async (req, res) => {
-  const { title, content, categoryIds, email } = req.body;
+  const { email } = req;
+  const { title, content, categoryIds } = req.body;
 
   const { error } = schemas.BlogPost.validate({ title, content, categoryIds });
 
@@ -35,8 +36,31 @@ const getById = rescue(async (req, res) => {
   res.status(codes.OK).json(blogPost);
 });
 
+const update = rescue(async (req, res) => {
+  const {
+    body,
+    email,
+    params: { id },
+    method,
+  } = req;
+
+  const { error } = schemas.BlogPost.validate(body, { context: { method } });
+
+  if (error) throw error;
+
+  const { content, title } = body;
+
+  const blogPost = await services.BlogPost.update(email, id, {
+    title,
+    content,
+  });
+
+  res.status(codes.OK).json(blogPost);
+});
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

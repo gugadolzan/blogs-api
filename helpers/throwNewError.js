@@ -27,6 +27,10 @@ const errors = {
     message: 'Token not found',
     status: codes.UNAUTHORIZED,
   },
+  unauthorized: {
+    message: 'Unauthorized user',
+    status: codes.UNAUTHORIZED,
+  },
   userConflict: {
     message: 'User already registered',
     status: codes.CONFLICT,
