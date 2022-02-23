@@ -12,11 +12,24 @@ const create = async (payload) => {
 
 const getAll = async () => {
   const users = await User.findAll();
-  
+
   return users;
+};
+
+const getById = async (id) => {
+  const user = await User.findOne({ where: { id } });
+
+  if (!user) throwNewError('userNotFound');
+
+  // Remove password from the data
+  const { password, ...userData } = user.dataValues;
+  
+  // and return the user data without password
+  return userData;
 };
 
 module.exports = {
   create,
   getAll,
+  getById,
 };

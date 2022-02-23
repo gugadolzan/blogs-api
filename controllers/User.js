@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { codes, jwt, throwNewError } = require('../helpers');
+const { codes, jwt } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -20,21 +20,21 @@ const create = rescue(async (req, res) => {
 });
 
 const getAll = rescue(async (req, res) => {
-  const { authorization } = req.headers;
-
-  if (!authorization) throwNewError('tokenNotFound');
-  
-  // If authorization header is not present or is invalid
-  // an error will be thrown by the validate function
-  // Refer to ../helpers/jwt.js
-  await jwt.validate(authorization);
-
   const users = await services.User.getAll();
 
   res.status(codes.OK).json(users);
 });
 
+const getById = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await services.User.getById(id);
+
+  res.status(codes.OK).json(user);
+});
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

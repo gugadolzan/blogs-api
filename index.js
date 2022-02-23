@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const error = require('./middlewares/error');
+const { error } = require('./middlewares');
 const routes = require('./routes');
 
 app.use(express.json());
@@ -10,6 +10,7 @@ app.use(express.json());
 app.get('/', (_request, response) => {
   response.send();
 });
+
 app.use('/user', routes.User);
 app.use('/login', routes.Login);
 

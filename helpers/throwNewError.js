@@ -19,6 +19,10 @@ const errors = {
     message: 'Token not found',
     status: codes.UNAUTHORIZED,
   },
+  userNotFound: {
+    message: 'User does not exist',
+    status: codes.NOT_FOUND,
+  },
 };
 
 module.exports = (code) => {
