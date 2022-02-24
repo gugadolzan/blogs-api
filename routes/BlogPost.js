@@ -5,10 +5,12 @@ const { validateAuthorization } = require('../middlewares');
 
 const router = express.Router();
 
-router.post('/', validateAuthorization, controllers.BlogPost.create);
-router.get('/', validateAuthorization, controllers.BlogPost.getAll);
-router.get('/:id', validateAuthorization, controllers.BlogPost.getById);
-router.put('/:id', validateAuthorization, controllers.BlogPost.update);
-router.delete('/:id', validateAuthorization, controllers.BlogPost.remove);
+router.use(validateAuthorization);
+router.post('/', controllers.BlogPost.create);
+router.get('/', controllers.BlogPost.getAll);
+router.get('/search', controllers.BlogPost.search);
+router.get('/:id', controllers.BlogPost.getById);
+router.put('/:id', controllers.BlogPost.update);
+router.delete('/:id', controllers.BlogPost.remove);
 
 module.exports = router;

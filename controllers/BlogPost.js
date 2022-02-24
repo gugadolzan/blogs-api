@@ -59,11 +59,22 @@ const update = rescue(async (req, res) => {
 });
 
 const remove = rescue(async (req, res) => {
-  const { email, params: { id } } = req;
+  const {
+    email,
+    params: { id },
+  } = req;
 
   await services.BlogPost.remove(id, email);
 
   res.status(codes.NO_CONTENT).end();
+});
+
+const search = rescue(async (req, res) => {
+  const { q } = req.query;
+
+  const blogPosts = await services.BlogPost.search(q);
+
+  res.status(codes.OK).json(blogPosts);
 });
 
 module.exports = {
@@ -72,4 +83,5 @@ module.exports = {
   getById,
   update,
   remove,
+  search,
 };

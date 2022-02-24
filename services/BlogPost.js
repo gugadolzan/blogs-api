@@ -1,5 +1,11 @@
 const { throwNewError } = require('../helpers');
-const { BlogPost, Category, User, PostsCategory } = require('../models');
+const {
+  BlogPost,
+  Category,
+  User,
+  PostsCategory,
+  Sequelize: { Op },
+} = require('../models');
 
 const create = async ({ title, content, categoryIds, email }) => {
   const { id: userId } = await User.findOne({ where: { email } });
@@ -75,10 +81,30 @@ const remove = async (postId, email) => {
   await BlogPost.destroy({ where: { id: postId } });
 };
 
+const search = async (searchTerm) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      // Filtering queries using sequelize Operators
+      // Refer to https://sequelize.org/v5/manual/models-usage.html#complex-filtering---or---not-queries
+      [Op.or]: [
+        { title: { [Op.like]: `%${searchTerm}%` } },
+        { content: { [Op.like]: `%${searchTerm}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return posts;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  search,
 };
