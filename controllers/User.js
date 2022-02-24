@@ -33,8 +33,17 @@ const getById = rescue(async (req, res) => {
   res.status(codes.OK).json(user);
 });
 
+const remove = rescue(async (req, res) => {
+  const { email } = req;
+
+  await services.User.remove(email);
+
+  res.status(codes.NO_CONTENT).end();
+});
+
 module.exports = {
   create,
   getAll,
   getById,
+  remove,
 };
