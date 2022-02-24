@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { codes, jwt } = require('../helpers');
+const { CODES, jwt, throwNewError } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -10,19 +10,19 @@ const create = rescue(async (req, res) => {
 
   const { error } = schemas.User.validate(payload);
 
-  if (error) throw error;
+  if (error) throwNewError('joi', error);
 
   await services.User.create(payload);
 
   const token = jwt.generate(payload);
 
-  res.status(codes.CREATED).json({ token });
+  res.status(CODES.CREATED).json({ token });
 });
 
 const getAll = rescue(async (_req, res) => {
   const users = await services.User.getAll();
 
-  res.status(codes.OK).json(users);
+  res.status(CODES.OK).json(users);
 });
 
 const getById = rescue(async (req, res) => {
@@ -30,7 +30,7 @@ const getById = rescue(async (req, res) => {
 
   const user = await services.User.getById(id);
 
-  res.status(codes.OK).json(user);
+  res.status(CODES.OK).json(user);
 });
 
 const remove = rescue(async (req, res) => {
@@ -38,7 +38,7 @@ const remove = rescue(async (req, res) => {
 
   await services.User.remove(email);
 
-  res.status(codes.NO_CONTENT).end();
+  res.status(CODES.NO_CONTENT).end();
 });
 
 module.exports = {

@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { codes } = require('../helpers');
+const { CODES, throwNewError } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -10,7 +10,7 @@ const create = rescue(async (req, res) => {
 
   const { error } = schemas.BlogPost.validate({ title, content, categoryIds });
 
-  if (error) throw error;
+  if (error) throwNewError('joi', error);
 
   const blogPost = await services.BlogPost.create({
     title,
@@ -19,13 +19,13 @@ const create = rescue(async (req, res) => {
     email,
   });
 
-  res.status(codes.CREATED).json(blogPost);
+  res.status(CODES.CREATED).json(blogPost);
 });
 
 const getAll = rescue(async (_req, res) => {
   const blogPosts = await services.BlogPost.getAll();
 
-  res.status(codes.OK).json(blogPosts);
+  res.status(CODES.OK).json(blogPosts);
 });
 
 const getById = rescue(async (req, res) => {
@@ -33,7 +33,7 @@ const getById = rescue(async (req, res) => {
 
   const blogPost = await services.BlogPost.getById(id);
 
-  res.status(codes.OK).json(blogPost);
+  res.status(CODES.OK).json(blogPost);
 });
 
 const update = rescue(async (req, res) => {
@@ -46,7 +46,7 @@ const update = rescue(async (req, res) => {
 
   const { error } = schemas.BlogPost.validate(body, { context: { method } });
 
-  if (error) throw error;
+  if (error) throwNewError('joi', error);
 
   const { content, title } = body;
 
@@ -55,7 +55,7 @@ const update = rescue(async (req, res) => {
     content,
   });
 
-  res.status(codes.OK).json(blogPost);
+  res.status(CODES.OK).json(blogPost);
 });
 
 const remove = rescue(async (req, res) => {
@@ -66,7 +66,7 @@ const remove = rescue(async (req, res) => {
 
   await services.BlogPost.remove(id, email);
 
-  res.status(codes.NO_CONTENT).end();
+  res.status(CODES.NO_CONTENT).end();
 });
 
 const search = rescue(async (req, res) => {
@@ -74,7 +74,7 @@ const search = rescue(async (req, res) => {
 
   const blogPosts = await services.BlogPost.search(q);
 
-  res.status(codes.OK).json(blogPosts);
+  res.status(CODES.OK).json(blogPosts);
 });
 
 module.exports = {

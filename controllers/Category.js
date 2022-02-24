@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { codes } = require('../helpers');
+const { CODES, throwNewError } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -9,17 +9,17 @@ const create = rescue(async (req, res) => {
 
   const { error } = schemas.Category.validate({ name });
 
-  if (error) throw error;
+  if (error) throwNewError('joi', error);
 
   const category = await services.Category.create(name);
 
-  res.status(codes.CREATED).json(category);
+  res.status(CODES.CREATED).json(category);
 });
 
 const getAll = rescue(async (_req, res) => {
   const categories = await services.Category.getAll();
 
-  res.status(codes.OK).json(categories);
+  res.status(CODES.OK).json(categories);
 });
 
 module.exports = {

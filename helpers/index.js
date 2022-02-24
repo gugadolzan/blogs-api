@@ -3,7 +3,7 @@ const statusCodes = require('./statusCodes');
 const throwNewError = require('./throwNewError');
 
 module.exports = {
-  codes: statusCodes,
+  CODES: statusCodes,
   jwt,
   throwNewError,
 };

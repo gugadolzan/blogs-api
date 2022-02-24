@@ -1,4 +1,4 @@
-const { codes } = require('../helpers');
+const { CODES } = require('../helpers');
 
 // Exporting array of middlewares, which will be executed in order
 module.exports = [
@@ -10,7 +10,7 @@ module.exports = [
     // then pass it to next middleware
     if (!err.isJoi) return next(err);
 
-    const status = codes.BAD_REQUEST;
+    const status = CODES.BAD_REQUEST;
     const { message } = err.details[0];
 
     res.status(status).json({ message });
@@ -19,7 +19,7 @@ module.exports = [
    * Middleware for handling other errors
    */
   (err, _req, res, _next) => {
-    const status = err.status || codes.INTERNAL_SERVER_ERROR;
+    const status = err.status || CODES.INTERNAL_SERVER_ERROR;
     const message = err.message || 'Internal server error';
 
     // If is an internal server error
@@ -38,7 +38,7 @@ module.exports = [
 // module.exports = (err, _req, res, next) => {
 //   if (err.name !== 'JsonWebTokenError') return next(err);
 
-//   const status = codes.UNAUTHORIZED;
+//   const status = CODES.UNAUTHORIZED;
 //   const message = 'Expired or invalid token';
 
 //   res.status(status).json({ message });
