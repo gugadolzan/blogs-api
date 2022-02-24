@@ -58,9 +58,18 @@ const update = rescue(async (req, res) => {
   res.status(codes.OK).json(blogPost);
 });
 
+const remove = rescue(async (req, res) => {
+  const { email, params: { id } } = req;
+
+  await services.BlogPost.remove(id, email);
+
+  res.status(codes.NO_CONTENT).end();
+});
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };

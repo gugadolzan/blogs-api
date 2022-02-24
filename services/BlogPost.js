@@ -52,7 +52,6 @@ const update = async (email, id, { title, content }) => {
 
   const { id: editorId } = await User.findOne({ where: { email } });
 
-  console.log(userId, editorId);
   if (userId !== editorId) throwNewError('unauthorized');
 
   await BlogPost.update({ title, content }, { where: { id } });
@@ -66,9 +65,20 @@ const update = async (email, id, { title, content }) => {
   });
 };
 
+const remove = async (postId, email) => {
+  const user = await getById(postId);
+
+  const { id: userId } = await User.findOne({ where: { email } });
+
+  if (user.userId !== userId) throwNewError('unauthorized');
+
+  await BlogPost.destroy({ where: { id: postId } });
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };
