@@ -1,23 +1,9 @@
-const express = require('express');
+require('dotenv').config();
 
-const app = express();
+const app = require('./app');
 
-const { error } = require('./middlewares');
-const routes = require('./routes');
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-
-app.get('/', (_request, response) => {
-  response.send();
-});
-
-app.use('/user', routes.User);
-app.use('/login', routes.Login);
-app.use('/categories', routes.Category);
-app.use('/post', routes.BlogPost);
-
-app.use(error);
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
