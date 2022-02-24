@@ -6,6 +6,7 @@ const { validateAuthorization } = require('../middlewares');
 const router = express.Router();
 
 router.use(validateAuthorization);
+
 router.post('/', controllers.BlogPost.create);
 router.get('/', controllers.BlogPost.getAll);
 router.get('/search', controllers.BlogPost.search);

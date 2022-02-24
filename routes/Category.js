@@ -5,7 +5,9 @@ const { validateAuthorization } = require('../middlewares');
 
 const router = express.Router();
 
-router.post('/', validateAuthorization, controllers.Category.create);
-router.get('/', validateAuthorization, controllers.Category.getAll);
+router.use(validateAuthorization);
+
+router.post('/', controllers.Category.create);
+router.get('/', controllers.Category.getAll);
 
 module.exports = router;

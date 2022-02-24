@@ -6,8 +6,11 @@ const { validateAuthorization } = require('../middlewares');
 const router = express.Router();
 
 router.post('/', controllers.User.create);
-router.get('/', validateAuthorization, controllers.User.getAll);
-router.get('/:id', validateAuthorization, controllers.User.getById);
-router.delete('/me', validateAuthorization, controllers.User.remove);
+
+router.use(validateAuthorization);
+
+router.get('/', controllers.User.getAll);
+router.get('/:id', controllers.User.getById);
+router.delete('/me', controllers.User.remove);
 
 module.exports = router;
