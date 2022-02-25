@@ -28,12 +28,12 @@ const getAll = async () => {
 };
 
 /**
- * @description Get a user by id
- * @param {{ id: string }} payload
+ * @description Get a user by email
+ * @param {string} email
  * @returns {Promise<object>}
  */
-const getById = async ({ id }) => {
-  const user = await models.User.findOne({ where: { id } });
+const getByEmail = async (email) => {
+  const user = await models.User.findOne({ where: { email } });
 
   if (!user) throwNewError('userNotFound');
 
@@ -45,10 +45,25 @@ const getById = async ({ id }) => {
 };
 
 /**
- * @description Delete a user by id
- * @param {{ email: string }} payload
+ * @description Get a user by id
+ * @param {string} id
+ * @returns {Promise<object>}
  */
-const remove = async ({ email }) => {
+const getById = async (id) => {
+  const user = await models.User.findOne({ where: { id } });
+
+  if (!user) throwNewError('userNotFound');
+
+  const { password, ...result } = user.dataValues;
+
+  return result;
+};
+
+/**
+ * @description Delete a user by id
+ * @param {string} email
+ */
+const remove = async (email) => {
   const { id } = await models.User.findOne({ where: { email } });
 
   await models.User.destroy({ where: { id } });
@@ -57,6 +72,7 @@ const remove = async ({ email }) => {
 module.exports = {
   create,
   getAll,
+  getByEmail,
   getById,
   remove,
 };

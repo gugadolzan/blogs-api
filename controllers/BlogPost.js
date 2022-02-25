@@ -58,7 +58,7 @@ const remove = rescue(async (req, res) => {
   const { email } = req;
   const { id } = req.params;
 
-  await services.BlogPost.remove(id, email);
+  await services.BlogPost.remove(email, id);
 
   res.status(CODES.NO_CONTENT).end();
 });

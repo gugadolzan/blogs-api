@@ -30,7 +30,23 @@ const getAll = async () => {
   return result;
 };
 
+/**
+ * @description Get a category by id
+ * @param {string} id
+ * @returns {Promise<object>}
+ */
+const getById = async (id) => {
+  const category = await models.Category.findOne({ where: { id } });
+
+  if (!category) throwNewError('categoryNotFound');
+
+  const result = category.dataValues;
+
+  return result;
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

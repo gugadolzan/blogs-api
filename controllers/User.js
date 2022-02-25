@@ -40,7 +40,7 @@ const getAll = rescue(async (_req, res) => {
 const getById = rescue(async (req, res) => {
   const { id } = req.params;
 
-  const user = await services.User.getById({ id });
+  const user = await services.User.getById(id);
 
   res.status(CODES.OK).json(user);
 });
@@ -53,7 +53,7 @@ const getById = rescue(async (req, res) => {
 const remove = rescue(async (req, res) => {
   const { email } = req;
 
-  await services.User.remove({ email });
+  await services.User.remove(email);
 
   res.status(CODES.NO_CONTENT).end();
 });
