@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { CODES, throwNewError } = require('../helpers');
+const { CODES, payloadValidator } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -8,9 +8,7 @@ const create = rescue(async (req, res) => {
   const { email } = req;
   const { title, content, categoryIds } = req.body;
 
-  const { error } = schemas.BlogPost.validate({ title, content, categoryIds });
-
-  if (error) throwNewError('joi', error);
+  payloadValidator(schemas.BlogPost, { title, content, categoryIds });
 
   const blogPost = await services.BlogPost.create({
     title,
@@ -44,9 +42,7 @@ const update = rescue(async (req, res) => {
     method,
   } = req;
 
-  const { error } = schemas.BlogPost.validate(body, { context: { method } });
-
-  if (error) throwNewError('joi', error);
+  payloadValidator(schemas.BlogPost, body, { context: { method } });
 
   const { content, title } = body;
 

@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { CODES, jwt, throwNewError } = require('../helpers');
+const { CODES, jwt, payloadValidator } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -8,9 +8,7 @@ const create = rescue(async (req, res) => {
   const { displayName, email, password, image } = req.body;
   const payload = { displayName, email, password, image };
 
-  const { error } = schemas.User.validate(payload);
-
-  if (error) throwNewError('joi', error);
+  payloadValidator(schemas.User, payload);
 
   await services.User.create(payload);
 
