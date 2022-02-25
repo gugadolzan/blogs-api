@@ -4,6 +4,11 @@ const { CODES, jwt, payloadValidator } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
+/**
+ * @description Login a user
+ * @method POST
+ * @path /login
+ */
 const login = rescue(async (req, res) => {
   const { email, password } = req.body;
 

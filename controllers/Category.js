@@ -4,6 +4,11 @@ const { CODES, payloadValidator } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
+/**
+ * @description Create a new category
+ * @method POST
+ * @path /categories
+ */
 const create = rescue(async (req, res) => {
   const { name } = req.body;
 
@@ -14,6 +19,11 @@ const create = rescue(async (req, res) => {
   res.status(CODES.CREATED).json(category);
 });
 
+/**
+ * @description Get all categories
+ * @method GET
+ * @path /categories
+ */
 const getAll = rescue(async (_req, res) => {
   const categories = await services.Category.getAll();
 

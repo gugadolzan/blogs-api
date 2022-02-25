@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports = Joi.object().keys({
-  // Tip from Marcello "Atharr" Alves
+  // Tip from Marcello "Atharr" Alves for conditional validation
   categoryIds: Joi.when(Joi.ref('$method'), {
     is: 'PUT',
     then: Joi.array().forbidden().messages({
