@@ -3,7 +3,7 @@ const { CODES } = require('../helpers');
 // Exporting array of middlewares, which will be executed in order
 module.exports = [
   /**
-   * Middleware for handling Joi errors
+   * @description Handle Joi errors
    */
   (err, _req, res, next) => {
     // If error is not an instance of Joi
@@ -16,7 +16,7 @@ module.exports = [
     res.status(status).json({ message });
   },
   /**
-   * Middleware for handling other errors
+   * @description Handle all other errors
    */
   (err, _req, res, _next) => {
     const status = err.status || CODES.INTERNAL_SERVER_ERROR;

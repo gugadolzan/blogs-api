@@ -42,7 +42,7 @@ const errors = {
 };
 
 /**
- * @description Throws an error with the given error code message and status
+ * @description Throw an error with the given error code message and status
  * @param {string} code
  * @param {Error} joiError
  * @throws {Error}
