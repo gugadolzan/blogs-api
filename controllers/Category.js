@@ -14,7 +14,7 @@ const create = rescue(async (req, res) => {
 
   payloadValidator(schemas.Category, { name });
 
-  const category = await services.Category.create(name);
+  const category = await services.Category.create({ name });
 
   res.status(CODES.CREATED).json(category);
 });

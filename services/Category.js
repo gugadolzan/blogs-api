@@ -1,21 +1,33 @@
-const { Category } = require('../models');
-
 const { throwNewError } = require('../helpers');
+const models = require('../models');
 
-const create = async (name) => {
-  let category = await Category.findOne({ where: { name } });
+/**
+ * @description Create a new category
+ * @param {{ name: string }} payload
+ * @returns {Promise<object>}
+ */
+const create = async ({ name }) => {
+  const category = await models.Category.findOne({ where: { name } });
 
   if (category) throwNewError('categoryConflict');
 
-  category = await Category.create({ name });
+  const { null: id, dataValues } = await models.Category.create({ name });
 
-  return category;
+  const result = { ...dataValues, id };
+
+  return result;
 };
 
+/**
+ * @description Get all categories
+ * @returns {Promise<object[]>}
+ */
 const getAll = async () => {
-  const categories = await Category.findAll({ order: [['id', 'ASC']] });
+  const categories = await models.Category.findAll({ order: [['id', 'ASC']] });
 
-  return categories;
+  const result = categories.map((category) => category.dataValues);
+
+  return result;
 };
 
 module.exports = {
