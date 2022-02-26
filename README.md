@@ -21,9 +21,9 @@ npm install
 
 ## Executando aplicação
 
-1. Altere o nome do arquivo `.env.example` para `.env` e adicione as informações de conexão com o banco de dados.
+1. Certifique-se de que o MySQL server esteja rodando.
 
-2. Certifique-se de que o MySQL server está rodando.
+2. Altere o nome do arquivo `.env.example` para `.env` e adicione as informações de conexão com o banco de dados.
 
 3. Execute o comando:
 
