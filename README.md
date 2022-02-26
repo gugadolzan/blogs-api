@@ -13,7 +13,7 @@ Existe uma tabela para os usuários que desejam se cadastrar na aplicação. Exi
 - MySQL
 - Sequelize ORM
 
-## Instalando Dependências
+## Instalando dependências
 
 ```bash
 npm install
