@@ -6,7 +6,7 @@ const throwNewError = require('./throwNewError');
 
 const options = {
   algorithm: 'HS256',
-  expiresIn: '7d',
+  expiresIn: '1d',
 };
 const secret = process.env.JWT_SECRET;
 
