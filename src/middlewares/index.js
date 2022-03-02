@@ -1,7 +1,7 @@
+const auth = require('./auth');
 const error = require('./error');
-const validateAuthorization = require('./validateAuthorization');
 
 module.exports = {
+  auth,
   error,
-  validateAuthorization,
 };

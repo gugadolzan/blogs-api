@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { error } = require('./middlewares');
+const middlewares = require('./middlewares');
 const routes = require('./routes');
 
 const app = express();
@@ -14,6 +14,6 @@ app.use('/login', routes.Login);
 app.use('/categories', routes.Category);
 app.use('/post', routes.BlogPost);
 
-app.use(error);
+app.use(middlewares.error);
 
 module.exports = app;
