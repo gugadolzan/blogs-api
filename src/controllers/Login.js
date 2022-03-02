@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-const { CODES, jwt, payloadValidator } = require('../helpers');
+const { CODES, payloadValidator } = require('../helpers');
 const schemas = require('../schemas');
 const services = require('../services');
 
@@ -9,18 +9,16 @@ const services = require('../services');
  * @method POST
  * @path /login
  */
-const login = rescue(async (req, res) => {
+const getToken = rescue(async (req, res) => {
   const { email, password } = req.body;
 
   payloadValidator(schemas.Login, { email, password });
 
-  await services.User.getByEmail(email);
-
-  const token = jwt.generate({ email });
+  const token = await services.User.login({ email, password });
 
   res.status(CODES.OK).json({ token });
 });
 
 module.exports = {
-  login,
+  getToken,
 };
