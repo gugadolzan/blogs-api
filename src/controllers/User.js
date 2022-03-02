@@ -16,7 +16,7 @@ const create = rescue(async (req, res) => {
 
   await services.User.create({ displayName, email, image, password });
 
-  const token = jwt.generate({ displayName, email, image, password });
+  const token = jwt.generate({ email });
 
   res.status(CODES.CREATED).json({ token });
 });
