@@ -1,4 +1,6 @@
-const { throwNewError } = require('../helpers');
+const argon2 = require('argon2');
+
+const { jwt, throwNewError } = require('../helpers');
 const models = require('../models');
 
 /**
@@ -12,7 +14,14 @@ const create = async ({ displayName, email, image, password }) => {
   // then throw an error
   if (user) throwNewError('userConflict');
 
-  await models.User.create({ displayName, email, image, password });
+  const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
+
+  await models.User.create({
+    displayName,
+    email,
+    image,
+    password: hashedPassword,
+  });
 };
 
 /**
@@ -60,6 +69,27 @@ const getById = async (id) => {
 };
 
 /**
+ * @description Login a user
+ * @param {{ email: string, password: string }} payload
+ * @returns {Promise<string>}
+ */
+const login = async ({ email, password }) => {
+  const user = await models.User.findOne({ where: { email } });
+
+  if (!user) throwNewError('invalidFields');
+
+  const isPasswordValid = await argon2.verify(user.password, password, {
+    type: argon2.argon2id,
+  });
+
+  if (!isPasswordValid) throwNewError('invalidFields');
+
+  const token = jwt.generate({ email });
+
+  return token;
+};
+
+/**
  * @description Delete a user by id
  * @param {string} id
  */
@@ -72,5 +102,6 @@ module.exports = {
   getAll,
   getByEmail,
   getById,
+  login,
   remove,
 };
