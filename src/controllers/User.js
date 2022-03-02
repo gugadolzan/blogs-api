@@ -51,9 +51,9 @@ const getById = rescue(async (req, res) => {
  * @path /user/:id
  */
 const remove = rescue(async (req, res) => {
-  const { email } = req;
+  const { id } = req.user;
 
-  await services.User.remove(email);
+  await services.User.remove(id);
 
   res.status(CODES.NO_CONTENT).end();
 });

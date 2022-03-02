@@ -33,15 +33,14 @@ const getAll = async () => {
  * @returns {Promise<object>}
  */
 const getByEmail = async (email) => {
-  const user = await models.User.findOne({ where: { email } });
+  const user = await models.User.findOne({
+    attributes: { exclude: ['password'] },
+    where: { email },
+  });
 
-  if (!user) throwNewError('userNotFound');
+  if (!user) throwNewError('invalidFields');
 
-  // Remove password from the data
-  const { password, ...result } = user.dataValues;
-
-  // and return the user data without password
-  return result;
+  return user.dataValues;
 };
 
 /**
@@ -50,22 +49,21 @@ const getByEmail = async (email) => {
  * @returns {Promise<object>}
  */
 const getById = async (id) => {
-  const user = await models.User.findOne({ where: { id } });
+  const user = await models.User.findOne({
+    attributes: { exclude: ['password'] },
+    where: { id },
+  });
 
   if (!user) throwNewError('userNotFound');
 
-  const { password, ...result } = user.dataValues;
-
-  return result;
+  return user.dataValues;
 };
 
 /**
  * @description Delete a user by id
- * @param {string} email
+ * @param {string} id
  */
-const remove = async (email) => {
-  const { id } = await models.User.findOne({ where: { email } });
-
+const remove = async (id) => {
   await models.User.destroy({ where: { id } });
 };
 

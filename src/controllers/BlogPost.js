@@ -10,16 +10,16 @@ const services = require('../services');
  * @path /post
  */
 const create = rescue(async (req, res) => {
-  const { email } = req;
   const { categoryIds, content, title } = req.body;
+  const { id: userId } = req.user;
 
   payloadValidator(schemas.BlogPost, { categoryIds, content, title });
 
   const blogPost = await services.BlogPost.create({
     categoryIds,
     content,
-    email,
     title,
+    userId,
   });
 
   res.status(CODES.CREATED).json(blogPost);
@@ -55,10 +55,10 @@ const getById = rescue(async (req, res) => {
  * @path /post/:id
  */
 const remove = rescue(async (req, res) => {
-  const { email } = req;
-  const { id } = req.params;
+  const { id: postId } = req.params;
+  const { id: userId } = req.user;
 
-  await services.BlogPost.remove(email, id);
+  await services.BlogPost.remove(postId, userId);
 
   res.status(CODES.NO_CONTENT).end();
 });
@@ -82,9 +82,10 @@ const search = rescue(async (req, res) => {
  * @path /post/:id
  */
 const update = rescue(async (req, res) => {
-  const { email, method } = req;
+  const { method } = req;
   const { categoryIds, content, title } = req.body;
-  const { id } = req.params;
+  const { id: postId } = req.params;
+  const { id: userId } = req.user;
 
   payloadValidator(
     schemas.BlogPost,
@@ -92,7 +93,7 @@ const update = rescue(async (req, res) => {
     { context: { method } },
   );
 
-  const blogPost = await services.BlogPost.update(email, id, {
+  const blogPost = await services.BlogPost.update(postId, userId, {
     content,
     title,
   });

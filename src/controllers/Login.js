@@ -14,9 +14,9 @@ const login = rescue(async (req, res) => {
 
   payloadValidator(schemas.Login, { email, password });
 
-  await services.Login.login(email);
+  await services.User.getByEmail(email);
 
-  const token = jwt.generate({ email, password });
+  const token = jwt.generate({ email });
 
   res.status(CODES.OK).json({ token });
 });

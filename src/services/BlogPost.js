@@ -3,16 +3,13 @@ const { Sequelize, ...models } = require('../models');
 
 const CategoryService = require('./Category');
 const PostsCategoryService = require('./PostsCategory');
-const UserService = require('./User');
 
 /**
  * @description Create a new blog post
- * @param {{ categoryIds: number[], content: string, email: string, title: string }} payload
+ * @param {{ categoryIds: number[], content: string, title: string, userId: string }} payload
  * @returns {Promise<object>}
  */
-const create = async ({ categoryIds, content, email, title }) => {
-  const { id: userId } = await UserService.getByEmail(email);
-
+const create = async ({ categoryIds, content, title, userId }) => {
   // Check existence of categories
   await Promise.all(categoryIds.map(async (id) => CategoryService.getById(id)));
 
@@ -71,17 +68,15 @@ const getById = async (id) => {
 
 /**
  * @description Delete a blog post by id
- * @param {string} email
  * @param {string} postId
+ * @param {string} userId
  */
-const remove = async (email, postId) => {
+const remove = async (postId, userId) => {
   const blogPost = await models.BlogPost.findOne({ where: { id: postId } });
 
   if (!blogPost) throwNewError('postNotFound');
 
-  const user = await UserService.getByEmail(email);
-
-  if (blogPost.userId !== user.id) throwNewError('unauthorized');
+  if (blogPost.userId !== userId) throwNewError('unauthorized');
 
   await models.BlogPost.destroy({ where: { id: postId } });
 };
@@ -114,22 +109,20 @@ const search = async (searchTerm) => {
 
 /**
  * @description Update a blog post by id
- * @param {string} email
- * @param {string} id
+ * @param {string} postId
+ * @param {string} userId
  * @param {{ content: string, title: string }} payload
  */
-const update = async (email, id, { content, title }) => {
-  const blogPost = await models.BlogPost.findOne({ where: { id } });
+const update = async (postId, userId, { content, title }) => {
+  const blogPost = await models.BlogPost.findOne({ where: { id: postId } });
 
   if (!blogPost) throwNewError('postNotFound');
 
-  const user = await UserService.getByEmail(email);
-
-  if (blogPost.userId !== user.id) throwNewError('unauthorized');
+  if (blogPost.userId !== userId) throwNewError('unauthorized');
 
   await models.BlogPost.update(
     { title, content, updated: new Date() },
-    { where: { id } },
+    { where: { id: postId } },
   );
 
   const blogPostUpdated = await models.BlogPost.findOne({
@@ -137,7 +130,7 @@ const update = async (email, id, { content, title }) => {
     include: [
       { model: models.Category, as: 'categories', through: { attributes: [] } },
     ],
-    where: { id },
+    where: { id: postId },
   });
 
   const result = blogPostUpdated.get({ plain: true });
