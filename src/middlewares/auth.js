@@ -15,7 +15,7 @@ module.exports = rescue(async (req, _res, next) => {
 
   const user = await services.User.getByEmail(email);
 
-  // Add user to request for later use
+  // Add user to request for later usage
   req.user = user;
 
   next();
