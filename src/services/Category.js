@@ -13,9 +13,7 @@ const create = async ({ name }) => {
 
   const { null: id, dataValues } = await models.Category.create({ name });
 
-  const result = { ...dataValues, id };
-
-  return result;
+  return { ...dataValues, id };
 };
 
 /**
@@ -40,9 +38,7 @@ const getById = async (id) => {
 
   if (!category) throwNewError('categoryNotFound');
 
-  const result = category.dataValues;
-
-  return result;
+  return category.dataValues;
 };
 
 module.exports = {
